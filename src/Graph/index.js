@@ -3,8 +3,9 @@ import moment from "moment";
 import Column from "./components/Column";
 import {MARGIN_UNIT} from "./constants";
 import Weekdays from "./components/Weekdays";
-import "./index.css"
 import Months from "./components/Months";
+import {Tooltip} from "react-tooltip";
+import "./index.css"
 
 const Graph = ({contributions = {}, date}) => {
     const COLUMN_COUNT = 51
@@ -56,20 +57,47 @@ const Graph = ({contributions = {}, date}) => {
     }, [weeks]);
 
     return (
-        <svg width={920} height={137}>
+        <div className="graph">
+            <svg width={920} height={137}>
+                <Weekdays y={18}/>
+                <g transform={`translate(20, 0)`}>
+                    <Months
+                        data={months}
+                    />
+                    {weeks.map((week, idx) => {
+                        return (
+                            <Column data={week} transform={`translate(${idx * MARGIN_UNIT}, 18)`} key={idx}/>
+                        )
+                    })}
+                </g>
+            </svg>
 
-            <Weekdays y={18} />
-            <g transform={`translate(20, 0)`}>
-                <Months
-                    data={months}
-                />
-                {weeks.map((week, idx) => {
-                    return (
-                        <Column data={week} transform={`translate(${idx * MARGIN_UNIT}, 18)`} key={idx}/>
-                    )
-                })}
-            </g>
-        </svg>
+            <Tooltip
+                anchorSelect=".block"
+                className="graph__tooltip"
+                render={({content}) => {
+                    if (content) {
+                        const [date, contributions] = content.split(':')
+                        return (
+                            <>
+                                <p className="graph__tooltip-title">
+                                    {contributions} contributions
+                                </p>
+                                <p className="graph__tooltip-desc">
+                                    {moment(date).locale('ru').format('dddd')},
+                                    {' '}
+                                    {moment(date).locale('ru').format('MMMM')}
+                                    {' '}
+                                    {moment(date).format('D')},
+                                    {' '}
+                                    {moment(date).format('YYYY')}
+                                </p>
+                            </>
+                        )
+                    }
+                }}
+            />
+        </div>
     );
 };
 

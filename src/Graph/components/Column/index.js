@@ -11,6 +11,9 @@ const Column = ({data, ...rest}) => {
                     y={idx * MARGIN_UNIT}
                     contributionsCount={block.contributions}
                     key={block.value}
+                    className="block"
+                    data-tooltip-content={`${block.value}:${block.contributions}`}
+                    data-tooltip-place="top"
                 />
             ))}
         </g>

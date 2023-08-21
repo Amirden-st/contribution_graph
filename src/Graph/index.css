@@ -1,5 +1,15 @@
+.graph {
+    font-size: 12px;
+}
+
 .graph__text {
     color: #959494;
-    font-size: 12px;
     text-transform: capitalize;
+}
+.graph__tooltip {
+    background-color: #000000 !important;
+}
+.graph__tooltip-desc {
+    font-size: 10px;
+    color: #7C7C7C;
 }
